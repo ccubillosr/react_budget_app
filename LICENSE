@@ -1,4 +1,8 @@
-                                 Apache License
+
+
+// Add your instrumentation key or use the APPLICATIONINSIGHTSKEY environment variable on your production machine to start collecting data.
+var ai = require('applicationinsights');
+ai.setup(process.env.APPLICATIONINSIGHTSKEY || 'your_instrumentation_key').start();                                 Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 

@@ -3,6 +3,8 @@ import React, { createContext, useReducer } from 'react';
 // 5. The reducer - this is used to update the state, based on the action
 export const AppReducer = (state, action) => {
     let budget = 0;
+    let currency="";
+    let nameCurrency="";
     switch (action.type) {
         case 'ADD_EXPENSE':
             let total_budget = 0;
@@ -66,9 +68,12 @@ export const AppReducer = (state, action) => {
             };
         case 'CHG_CURRENCY':
             action.type = "DONE";
-            state.currency = action.payload;
+            state.currency = action.payload.currency;
+            state.nameCurrency=action.payload.nameCurrency;
             return {
-                ...state
+                ...state,
+                currency,
+                nameCurrency
             }
 
         default:
@@ -86,7 +91,8 @@ const initialState = {
         { id: "Human Resource", name: 'Human Resource', cost: 40 },
         { id: "IT", name: 'IT', cost: 500 },
     ],
-    currency: '£'
+    currency: '£',
+    nameCurrency:'Pound'
 };
 
 // 2. Creates the context this is the thing our components import and use to get the state
@@ -99,6 +105,9 @@ export const AppProvider = (props) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
     let remaining = 0;
     let totalGastos = 0;
+    let currency= "£";
+    let nameCurrency="Pound";
+    
 
     if (state.expenses) {
             const totalExpenses = state.expenses.reduce((total, item) => {
@@ -106,6 +115,15 @@ export const AppProvider = (props) => {
         }, 0);
         remaining = state.budget - totalExpenses;
         totalGastos=totalExpenses;
+        
+    }
+    if (state.currency)
+    {
+        currency= state.currency;
+    }
+    if (state.nameCurrency)
+    {
+        nameCurrency= state.nameCurrency;
     }
 
     return (
@@ -116,7 +134,8 @@ export const AppProvider = (props) => {
                 remaining: remaining,
                 totalGastos:totalGastos,
                 dispatch,
-                currency: state.currency
+                currency: currency,
+                nameCurrency :nameCurrency
             }}
         >
             {props.children}

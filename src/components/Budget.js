@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 const Budget = (props) => {
-    const { dispatch, totalGastos,budget} = useContext(AppContext);
+    const { dispatch, totalGastos,budget,currency} = useContext(AppContext);
     let [valor, setValor] = useState('');
     let change=false;
     if(valor === '')
@@ -27,12 +27,12 @@ const Budget = (props) => {
         }
     };
     if(valor > 20000) {
-        alert("The budget limit cannot exceed £ 20000");
+        alert("The budget limit cannot exceed " +currency +"  20000");
         setValor({valor});
         return;
     };
     if(valor < totalGastos) {
-        alert("The budget cannot be lower to spent to far £ "+ totalGastos);
+        alert("The budget cannot be lower to spent to far "+ currency +" "+ totalGastos);
         setValor(totalGastos);
         return;
     };
@@ -44,7 +44,7 @@ const Budget = (props) => {
     
     return (
         <div className='alert alert-secondary'>
-            <span>Budget: £
+            <span>Budget: {currency}
             <input
                         required='required'
                         type='number'
